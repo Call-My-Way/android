@@ -1,0 +1,3 @@
+[submodule "android_ri"]
+	path = android_ri
+	url = git@bitbucket.org:aaccou52/android_ri.git
