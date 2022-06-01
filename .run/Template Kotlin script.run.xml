@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" singleton="false">
+    <module name="android" />
+    <shortenClasspath name="NONE" />
+    <option name="filePath" value="" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
