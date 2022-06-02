@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:748941770452:android:64bb384c910bdeb3950541",
         "android_client_info": {
-          "package_name": "org.callmyway"
+          "package_name": "com.callmyway.android"
         }
       },
       "oauth_client": [
@@ -38,7 +38,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:748941770452:android:b942fed09fb0d067950541",
         "android_client_info": {
-          "package_name": "org.callmyway.debug"
+          "package_name": "org.linphone.debug"
         }
       },
       "oauth_client": [

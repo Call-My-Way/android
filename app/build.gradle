@@ -5,13 +5,13 @@ plugins {
     id 'org.jlleitschuh.gradle.ktlint'
 }
 
-def appVersionName = "1.1.5"
-// Uncomment for release
-// def appVersionCode = 40600 // 4.06.00
-def appVersionCode = 5 // 4.05.93
+def appVersionName = "4.7.0"
+// Uncomment for 4.7.0 release
+// def appVersionCode = 40700 // 4.07.00
+def appVersionCode = 40690 // 4.06.00
 
 static def getPackageName() {
-    return "org.callmyway"
+    return "org.linphone"
 }
 
 def firebaseEnabled = new File(projectDir.absolutePath +'/google-services.json').exists()
@@ -84,11 +84,11 @@ project.tasks['preBuild'].dependsOn 'getGitVersion'
 project.tasks['preBuild'].dependsOn 'linphoneSdkSource'
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion '32.0.0'
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 32
+        targetSdkVersion 31
         versionCode appVersionCode
         versionName "${project.version}"
         applicationId getPackageName()
@@ -99,17 +99,23 @@ android {
             outputFileName = "linphone-android-${variant.buildType.name}-${project.version}.apk"
         }
 
+        var enableFirebaseService = "false"
+        if (firebaseEnabled) {
+            enableFirebaseService = "true"
+        }
         // See https://developer.android.com/studio/releases/gradle-plugin#3-6-0-behavior for why extractNativeLibs is set to true in debug flavor
         if (variant.buildType.name == "release" || variant.buildType.name == "releaseWithCrashlytics") {
             variant.getMergedFlavor().manifestPlaceholders = [linphone_address_mime_type: "vnd.android.cursor.item/vnd." + getPackageName() + ".provider.sip_address",
-                                                            linphone_file_provider: getPackageName() + ".fileprovider",
-                                                            appLabel: "@string/app_name",
-                                                            extractNativeLibs: "false"]
+                                                              linphone_file_provider: getPackageName() + ".fileprovider",
+                                                              appLabel: "@string/app_name",
+                                                              firebaseServiceEnabled: enableFirebaseService,
+                                                              extractNativeLibs: "false"]
         } else {
             variant.getMergedFlavor().manifestPlaceholders = [linphone_address_mime_type: "vnd.android.cursor.item/vnd." + getPackageName() + ".provider.sip_address",
-                                                            linphone_file_provider: getPackageName() + ".debug.fileprovider",
-                                                            appLabel: "@string/app_name_debug",
-                                                            extractNativeLibs: "true"]
+                                                              linphone_file_provider: getPackageName() + ".debug.fileprovider",
+                                                              appLabel: "@string/app_name_debug",
+                                                              firebaseServiceEnabled: enableFirebaseService,
+                                                              extractNativeLibs: "true"]
         }
     }
 
@@ -120,9 +126,9 @@ android {
     signingConfigs {
         release {
             storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['masum']
-            keyAlias keystoreProperties['masum']
-            keyPassword keystoreProperties['masum']
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
 
@@ -193,41 +199,50 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    namespace 'org.linphone'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.media:media:1.4.3'
-    implementation 'androidx.fragment:fragment-ktx:1.4.0'
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.media:media:1.6.0'
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    implementation 'androidx.core:core-ktx:1.8.0'
 
-    def nav_version = "2.4.0-rc01"
+    def nav_version = "2.4.2"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    implementation "androidx.slidingpanelayout:slidingpanelayout:1.2.0-rc01"
-    implementation "androidx.window:window:1.0.0-rc01"
+    implementation "androidx.slidingpanelayout:slidingpanelayout:1.2.0"
+    implementation "androidx.window:window:1.0.0"
 
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "androidx.gridlayout:gridlayout:1.0.0"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation "androidx.security:security-crypto-ktx:1.1.0-alpha03"
-    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
-
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation 'androidx.core:core-splashscreen:1.0.0-rc01'
 
     implementation 'androidx.emoji:emoji:1.1.0'
     implementation 'androidx.emoji:emoji-bundled:1.1.0'
 
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
+    // https://github.com/material-components/material-components-android/blob/master/LICENSE Apache v2.0
+    implementation 'com.google.android.material:material:1.6.1'
+    // https://github.com/google/flexbox-layout/blob/main/LICENSE Apache v2.0
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
+    // https://github.com/coil-kt/coil/blob/main/LICENSE.txt Apache v2.0
+    def coil_version = "2.0.0-rc03"
+    implementation("io.coil-kt:coil:$coil_version")
+    implementation("io.coil-kt:coil-gif:$coil_version")
+    implementation("io.coil-kt:coil-svg:$coil_version")
+    implementation("io.coil-kt:coil-video:$coil_version")
+
+    // https://github.com/Baseflow/PhotoView/blob/master/LICENSE Apache v2.0
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
-    implementation platform('com.google.firebase:firebase-bom:26.4.0')
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
     if (crashlyticsEnabled) {
         implementation 'com.google.firebase:firebase-crashlytics-ndk'
     } else {
@@ -237,7 +252,7 @@ dependencies {
         implementation 'com.google.firebase:firebase-messaging'
     }
 
-    implementation 'org.linphone:linphone-sdk-android:5.1+'
+    implementation 'org.linphone:linphone-sdk-android:5.2.0-alpha'
 
     // Only enable leak canary prior to release
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
