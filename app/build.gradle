@@ -5,6 +5,9 @@ plugins {
     id 'org.jlleitschuh.gradle.ktlint'
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
 def appVersionName = "4.7.0"
 // Uncomment for 4.7.0 release
 // def appVersionCode = 40700 // 4.07.00
@@ -224,7 +227,9 @@ dependencies {
         implementation 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
         implementation 'org.eclipse.aether:aether-*:1.0.0.v20140518'
         implementation 'com.google.android.gms:play-services-ads:21.0.0'
-        implementation 'com.google.firebase:firebase-analytics:21.0.0'
+        implementation 'com.google.firebase:firebase-analytics'
+        implementation 'com.google.firebase:firebase-messaging'
+
         implementation 'com.google.firebase:firebase-analytics-ktx'
 
      implementation 'com.google.firebase:firebase-messaging-ktx'
@@ -278,6 +283,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
+
     if (crashlyticsEnabled) {
         implementation 'com.google.firebase:firebase-crashlytics-ndk'
     } else {
