@@ -84,11 +84,11 @@ project.tasks['preBuild'].dependsOn 'getGitVersion'
 project.tasks['preBuild'].dependsOn 'linphoneSdkSource'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion '31.0.0'
+    compileSdkVersion 32
+    buildToolsVersion '32'
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 31
+        minSdkVersion 26
+        targetSdkVersion 32
         versionCode appVersionCode
         versionName "${project.version}"
         applicationId getPackageName()
@@ -99,7 +99,7 @@ android {
             outputFileName = "linphone-android-${variant.buildType.name}-${project.version}.apk"
         }
 
-        var enableFirebaseService = "false"
+        var enableFirebaseService = "ture"
         if (firebaseEnabled) {
             enableFirebaseService = "true"
         }
@@ -126,9 +126,9 @@ android {
     signingConfigs {
         release {
             storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
+            storePassword keystoreProperties['01722gausia']
+            keyAlias keystoreProperties['key0']
+            keyPassword keystoreProperties['01722gausia']
         }
     }
 
@@ -203,15 +203,49 @@ android {
 }
 
 dependencies {
+    def work_version = "2.6.0"
+    // Force WorkManager 2.6.0 for transitive dependency
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.media:media:1.6.0'
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
     implementation 'androidx.core:core-ktx:1.8.0'
-
+     
     def nav_version = "2.4.2"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    
+        implementation 'com.android.tools.build:gradle:7.2.1'
+        implementation 'com.google.gms:google-services:4.3.10'
+        implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
+        implementation 'org.jlleitschuh.gradle:ktlint-gradle:10.0.2'
+        implementation 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
+        implementation 'org.eclipse.aether:aether-*:1.0.0.v20140518'
+        implementation 'com.google.android.gms:play-services-ads:21.0.0'
+        implementation 'com.google.firebase:firebase-analytics:21.0.0'
+        implementation 'com.google.firebase:firebase-analytics-ktx'
+
+     implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+       
+ implementation 'com.google.firebase:firebase-appcheck-playintegrity:16.0.0'
+        implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
+        implementation 'com.google.firebase:firebase-appindexing:20.0.0'
+        implementation 'com.google.firebase:firebase-messaging:23.0.5'
+        implementation 'com.google.firebase:firebase-messaging-ktx:23.0.5'
+        implementation 'com.google.firebase:firebase-dynamic-links:21.0.1'
+        implementation 'com.google.firebase:firebase-dynamic-links-ktx:21.0.1'
+        implementation 'com.google.firebase:firebase-ml-vision:24.1.0'
+        implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.4'
+        implementation 'com.google.firebase:firebase-abt'
+        implementation 'com.google.firebase:firebase-appcheck'
+        implementation 'com.google.firebase:firebase-appcheck-debug'
+        implementation 'com.google.firebase:firebase-appcheck-safetynet'
+        implementation 'com.google.firebase:firebase-appcheck-playintegrity'
+        implementation 'com.google.firebase:firebase-appdistribution'
+
+
 
     implementation "androidx.slidingpanelayout:slidingpanelayout:1.2.0"
     implementation "androidx.window:window:1.0.0"
@@ -252,7 +286,7 @@ dependencies {
         implementation 'com.google.firebase:firebase-messaging'
     }
 
-    implementation 'org.linphone:linphone-sdk-android:5.2.0-alpha'
+    implementation 'org.linphone:linphone-sdk-android:5.1.41'
 
     // Only enable leak canary prior to release
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
