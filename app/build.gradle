@@ -88,6 +88,7 @@ android {
     buildToolsVersion '32'
     defaultConfig {
         minSdkVersion 26
+        compileSdkVersion 32
         targetSdkVersion 32
         versionCode appVersionCode
         versionName "${project.version}"
@@ -216,7 +217,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     
-        implementation 'com.android.tools.build:gradle:7.2.1'
+        implementation 'com.android.tools.build:gradle:7.4.2'
         implementation 'com.google.gms:google-services:4.3.10'
         implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
         implementation 'org.jlleitschuh.gradle:ktlint-gradle:10.0.2'
